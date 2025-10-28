@@ -1,3 +1,1 @@
-Private Sub CheckBox1_Click()
-
-End Sub
+'==========HOJA DE ENSAYOS DE RUTINA ===============
