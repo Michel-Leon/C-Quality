@@ -1,6 +1,9 @@
 '============inicio del programa inspeccion===================
 '=======VARIABLES GLOBALES======
 public Palabra As String' SE GUARDA EL TEXTO CORRESPONDIENTE
+'----------------------------------------------------------------------
+'                   PROCEDIMIENTOS
+'----------------------------------------------------------------------
 Public Sub buscar_Inspeccion(PalabraBuscada As String,MTM1 As String,MTM2 As String,BRR As String,CP As String,CC As String,CM AS String)
     On Error GoTo ErrorHandler
 
@@ -62,6 +65,9 @@ Public Sub buscar_Inspeccion(PalabraBuscada As String,MTM1 As String,MTM2 As Str
     ErrorHandler:
         MsgBox "Error " & Err.Number & vbCrLf & Err.Description, vbCritical
 End Sub 
+'----------------------------------------------------------------------
+' BOTONES
+'----------------------------------------------------------------------
 public sub T_Power()
     palabra = "T-Power"
     buscar_Inspeccion palabra , "FR-0856", "FR-0857", "FR-0858", "FR-0859", "FR-0860", "Por definir"
