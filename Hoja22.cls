@@ -1,15 +1,15 @@
 '============inicio del programa inspeccion===================
-Public Sub buscar_TPOWER()
+'=======VARIABLES GLOBALES======
+public Palabra As String' SE GUARDA EL TEXTO CORRESPONDIENTE
+Public Sub buscar_Inspeccion(PalabraBuscada As String,MTM1 As String,MTM2 As String,BRR As String,CP As String,CC As String,CM AS String)
     On Error GoTo ErrorHandler
-    
-    Dim PalabraBuscada As String' SE GUARDA EL TEXTO CORRESPONDIENTE
+
     Dim wsOrigen As Worksheet, wsDestino As Worksheet
     Dim i As Long ' CONTADOR PARA RECCORER LAS FILAS
     Dim filaDestino As Long
     Dim encontrada As Boolean
 
-    'ASIGNACION DE VARIABLES
-    PalabraBuscada = "T-Power"
+    '====SELECCIONA LAS HOJAS DE ORIGEN Y DESTINO====
     Set wsOrigen = ThisWorkbook.Worksheets("PROYECTO")
     Set wsDestino = ThisWorkbook.Worksheets("INSPECCION")
     encontrada = False
@@ -40,12 +40,12 @@ Public Sub buscar_TPOWER()
                 wsDestino.Cells(filaDestino, "DB").Value = wsOrigen.Cells(i, "DL").Value
                 
                 '====Modifica las celdas especificadas====
-                wsDestino.Cells(filaDestino, "EF").Value = "FR-0856"
-                wsDestino.Cells(filaDestino, "ER").Value = "FR-0857"
-                wsDestino.Cells(filaDestino, "FD").Value = "FR-0858"
-                wsDestino.Cells(filaDestino, "GB").Value = "FR-0859"
-                wsDestino.Cells(filaDestino, "GZ").Value = "FR-0860"
-                wsDestino.Cells(filaDestino, "HX").Value = "Por definir"
+                wsDestino.Cells(filaDestino, "EF").Value = MTM1
+                wsDestino.Cells(filaDestino, "ER").Value = MTM2
+                wsDestino.Cells(filaDestino, "FD").Value = BRR
+                wsDestino.Cells(filaDestino, "GB").Value = CP
+                wsDestino.Cells(filaDestino, "GZ").Value = CC
+                wsDestino.Cells(filaDestino, "HX").Value = CM
             End If
         End If
     Next i
@@ -59,6 +59,14 @@ Public Sub buscar_TPOWER()
     
     Exit Sub
     
-ErrorHandler:
-    MsgBox "Error " & Err.Number & vbCrLf & Err.Description, vbCritical
+    ErrorHandler:
+        MsgBox "Error " & Err.Number & vbCrLf & Err.Description, vbCritical
+End Sub 
+public sub T_Power()
+    palabra = "T-Power"
+    buscar_Inspeccion palabra , "FR-0856", "FR-0857", "FR-0858", "FR-0859", "FR-0860", "Por definir"
+End Sub
+public sub G_Flex()
+    palabra = "G-Flex"
+    buscar_Inspeccion palabra , "FR-0850", "FR-0851", "FR-0852", "FR-0853", "FR-0854", "Por definir"
 End Sub
