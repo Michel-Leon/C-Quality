@@ -29,7 +29,9 @@ Public Sub buscar_Inspeccion(PalabraBuscada As String,MTM1 As String,MTM2 As Str
                     filaDestino = filaDestino + 4
                     If filaDestino > 10000 Then Exit Do
                 Loop
-                
+                '====AGREGAMOS ESTA LÍNEA====
+                wsDestino.Cells(filaDestino, "A").Value = wsOrigen.Cells(i, "BQ").Value
+
                 '====Copia SOLO las 4 celdas específicas====
                 ' BK -> BA
                 wsDestino.Cells(filaDestino, "BA").Value = wsOrigen.Cells(i, "BK").Value
