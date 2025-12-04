@@ -18,7 +18,7 @@ Public Sub buscar_Inspeccion(PalabraBuscada As String,MTM1 As String,MTM2 As Str
     encontrada = False
     
     '====BUSQUEDA DE PALABRA EN ORIGEN (CE94:CE158)====
-    For i = 94 To 158 ' BUSQUEDA EN LA COLUMNA CE
+    For i = 96 To 158 ' BUSQUEDA EN LA COLUMNA CE
         If wsOrigen.Cells(i, "CE").Value <> "" Then ' VERIFICA QUE LA CELDA NO ESTA VACIA
             If InStr(1, UCase(wsOrigen.Cells(i, "CE").Value), UCase(PalabraBuscada)) > 0 Then ' BUSCA LA PLABRA EN CADA TEXTO
                 encontrada = True
@@ -30,17 +30,13 @@ Public Sub buscar_Inspeccion(PalabraBuscada As String,MTM1 As String,MTM2 As Str
                     If filaDestino > 10000 Then Exit Do
                 Loop
                 '====AGREGAMOS ESTA LÍNEA====
-                wsDestino.Cells(filaDestino, "A").Value = wsOrigen.Cells(i, "BQ").Value
+                wsDestino.Cells(filaDestino, "A").Value = wsOrigen.Cells(i, "BK").Value
 
                 '====Copia SOLO las 4 celdas específicas====
                 ' BK -> BA
                 wsDestino.Cells(filaDestino, "BA").Value = wsOrigen.Cells(i, "BK").Value
-                'BQ -> BG
-                wsDestino.Cells(filaDestino, "BG").Value = wsOrigen.Cells(i, "BQ").Value
                 ' CE -> BU
                 wsDestino.Cells(filaDestino, "BU").Value = wsOrigen.Cells(i, "CE").Value
-                ' CS -> CI
-                wsDestino.Cells(filaDestino, "CI").Value = wsOrigen.Cells(i, "CS").Value
                 ' DL -> DB
                 wsDestino.Cells(filaDestino, "DB").Value = wsOrigen.Cells(i, "DL").Value
                 
