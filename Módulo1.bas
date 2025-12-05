@@ -235,7 +235,7 @@ Public Sub crearPaqueteAseguramiento()
     End If
     
     ' Crear carpeta "Aseguramiento"
-    nombreCarpetaAseguramiento = "Aseguramiento"
+    nombreCarpetaAseguramiento = "01.Inspeccion y verificacion"
     rutaCarpetaAseguramiento = rutaCarpetaPrincipal & nombreCarpetaAseguramiento & "\"
     
     If Not fso.FolderExists(rutaCarpetaAseguramiento) Then
