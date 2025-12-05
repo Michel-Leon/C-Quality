@@ -47,7 +47,7 @@ Sub Tomar_valores()
             columna6 = HOJA_INSPECCION.Range("HX" & filaActual).Value
             
             encontrado = True
-            MsgBox "OT encontrada en la fila " & filaActual & vbCrLf & _
+            'MsgBox "OT encontrada en la fila " & filaActual & vbCrLf & _
                    "Valores capturados correctamente.", vbInformation
             Exit Do
         End If
@@ -85,30 +85,72 @@ Public Sub crearPaqueteAseguramiento()
     Dim nombreArchivo As String
     Dim estadoVerificacion As String
     Dim HOJA_INSPECCION As Worksheet
-    Dim filaOT As Long
+    Dim hoja_Proyecto As Worksheet
+    Dim filaOT_Inspeccion As Long
+    Dim filaOT_Proyecto As Long
     Dim fechaCreacion As String
     Dim fso As Object
+    Dim encontradoInspeccion As Boolean
+    Dim encontradoProyecto As Boolean
+    Dim rutaTemporal As String
+    Dim rutaCompleta As String
     
     Set wbOrigen = ThisWorkbook
     Set hojascopiar = New Collection
     Set HOJA_INSPECCION = wbOrigen.Worksheets("INSPECCION")
+    Set hoja_Proyecto = wbOrigen.Worksheets("PROYECTO")
     Set fso = CreateObject("Scripting.FileSystemObject")
     
     ' Obtener la fecha actual en formato YYYY-MM-DD
     fechaCreacion = Format(Date, "yyyy-mm-dd")
     
-    ' Buscar la fila de la OT para verificar el estado
-    filaOT = 84
-    Do While HOJA_INSPECCION.Range("BA" & filaOT).Value <> ""
-        If HOJA_INSPECCION.Range("BA" & filaOT).Value = OT_Buscar Then
-            estadoVerificacion = HOJA_INSPECCION.Range("EP" & filaOT).Value
+    ' ========== BUSCAR OT EN HOJA INSPECCION ==========
+    encontradoInspeccion = False
+    filaOT_Inspeccion = 84
+    Do While HOJA_INSPECCION.Range("BA" & filaOT_Inspeccion).Value <> ""
+        If HOJA_INSPECCION.Range("BA" & filaOT_Inspeccion).Value = OT_Buscar Then
+            ' Obtener valores de los checkboxes de la fila encontrada
+            CH1 = HOJA_INSPECCION.Range("EO" & filaOT_Inspeccion).Value
+            CH2 = HOJA_INSPECCION.Range("FA" & filaOT_Inspeccion).Value
+            CH3 = HOJA_INSPECCION.Range("FY" & filaOT_Inspeccion).Value
+            CH4 = HOJA_INSPECCION.Range("GW" & filaOT_Inspeccion).Value
+            CH5 = HOJA_INSPECCION.Range("HU" & filaOT_Inspeccion).Value
+            CH6 = HOJA_INSPECCION.Range("IS" & filaOT_Inspeccion).Value
+            
+            encontradoInspeccion = True
             Exit Do
         End If
-        filaOT = filaOT + 4
-        If filaOT > 10000 Then Exit Do
+        filaOT_Inspeccion = filaOT_Inspeccion + 4
+        If filaOT_Inspeccion > 10000 Then Exit Do
     Loop
     
-    ' Verificar si está "Verificado"
+    ' Verificar si se encontró en INSPECCION
+    If Not encontradoInspeccion Then
+        MsgBox "No se encontró la OT " & OT_Buscar & " en la hoja INSPECCION.", vbExclamation
+        Exit Sub
+    End If
+    
+    ' ========== BUSCAR OT EN HOJA PROYECTO ==========
+    encontradoProyecto = False
+    filaOT_Proyecto = 96
+    Do While hoja_Proyecto.Range("BK" & filaOT_Proyecto).Value <> ""
+        If hoja_Proyecto.Range("BK" & filaOT_Proyecto).Value = OT_Buscar Then
+            ' Obtener el estado de verificación de la columna EP
+            estadoVerificacion = hoja_Proyecto.Range("EP" & filaOT_Proyecto).Value
+            encontradoProyecto = True
+            Exit Do
+        End If
+        filaOT_Proyecto = filaOT_Proyecto + 4
+        If filaOT_Proyecto > 10000 Then Exit Do
+    Loop
+    
+    ' Verificar si se encontró en PROYECTO
+    If Not encontradoProyecto Then
+        MsgBox "No se encontró la OT " & OT_Buscar & " en la hoja PROYECTO.", vbExclamation
+        Exit Sub
+    End If
+    
+    ' ========== VERIFICAR ESTADO ==========
     If UCase(Trim(estadoVerificacion)) <> "VERIFICADO" Then
         MsgBox "La OT " & OT_Buscar & " no ha sido verificada." & vbCrLf & _
                "Estado actual: " & estadoVerificacion & vbCrLf & _
@@ -116,9 +158,9 @@ Public Sub crearPaqueteAseguramiento()
         Exit Sub
     End If
     
-    ' Agregar hojas según los checkboxes
+    ' ========== AGREGAR HOJAS SEGÚN LOS CHECKBOXES ==========
     Select Case CH1
-        Case True, "Verdadero"
+        Case True, "Verdadero", "VERDADERO"
             Select Case columna1
                 Case "FR-0856"
                     If SheetExists("FR-0856") Then hojascopiar.Add wbOrigen.Worksheets("FR-0856")
@@ -126,9 +168,8 @@ Public Sub crearPaqueteAseguramiento()
                     If SheetExists("FR-0850") Then hojascopiar.Add wbOrigen.Worksheets("FR-0850")
             End Select
     End Select
-    
     Select Case CH2
-        Case True, "Verdadero"
+        Case True, "Verdadero", "VERDADERO"
             Select Case columna2
                 Case "FR-0857"
                     If SheetExists("FR-0857") Then hojascopiar.Add wbOrigen.Worksheets("FR-0857")
@@ -136,9 +177,8 @@ Public Sub crearPaqueteAseguramiento()
                     If SheetExists("FR-0851") Then hojascopiar.Add wbOrigen.Worksheets("FR-0851")
             End Select
     End Select
-    
     Select Case CH3
-        Case True, "Verdadero"
+        Case True, "Verdadero", "VERDADERO"
             Select Case columna3
                 Case "FR-0858"
                     If SheetExists("FR-0858") Then hojascopiar.Add wbOrigen.Worksheets("FR-0858")
@@ -146,9 +186,8 @@ Public Sub crearPaqueteAseguramiento()
                     If SheetExists("FR-0852") Then hojascopiar.Add wbOrigen.Worksheets("FR-0852")
             End Select
     End Select
-    
     Select Case CH4
-        Case True, "Verdadero"
+        Case True, "Verdadero", "VERDADERO"
             Select Case columna4
                 Case "FR-0859"
                     If SheetExists("FR-0859") Then hojascopiar.Add wbOrigen.Worksheets("FR-0859")
@@ -156,9 +195,8 @@ Public Sub crearPaqueteAseguramiento()
                     If SheetExists("FR-0853") Then hojascopiar.Add wbOrigen.Worksheets("FR-0853")
             End Select
     End Select
-    
     Select Case CH5
-        Case True, "Verdadero"
+        Case True, "Verdadero", "VERDADERO"
             Select Case columna5
                 Case "FR-0860"
                     If SheetExists("FR-0860") Then hojascopiar.Add wbOrigen.Worksheets("FR-0860")
@@ -166,9 +204,8 @@ Public Sub crearPaqueteAseguramiento()
                     If SheetExists("FR-0854") Then hojascopiar.Add wbOrigen.Worksheets("FR-0854")
             End Select
     End Select
-    
     Select Case CH6
-        Case True, "Verdadero"
+        Case True, "Verdadero", "VERDADERO"
             Select Case columna6
                 Case "FR-0861"
                     If SheetExists("FR-0861") Then hojascopiar.Add wbOrigen.Worksheets("FR-0861")
@@ -179,12 +216,14 @@ Public Sub crearPaqueteAseguramiento()
     
     ' Verificar si hay hojas para copiar
     If hojascopiar.Count = 0 Then
-        MsgBox "No hay hojas seleccionadas para copiar.", vbExclamation
+        MsgBox "No hay hojas seleccionadas para copiar." & vbCrLf & _
+               "Verifique que los checkboxes estén marcados en la hoja INSPECCION.", vbExclamation
         Exit Sub
     End If
     
-    ' Definir ruta base (CAMBIAR ESTA RUTA A LA UBICACIÓN DESEADA)
-    rutaBase = "C:\Users\sleon\OneDrive - industriascts.com\Pruebas FAT"
+    ' ========== CREAR ESTRUCTURA DE CARPETAS ==========
+    ' Definir ruta base
+    rutaBase = "C:\Users\sleon\OneDrive - industriascts.com\Pruebas FAT\"
     
     ' Crear nombre de carpeta principal: OT-Producto-Aplicacion-Fecha
     nombreCarpetaPrincipal = "OT-" & OT_Buscar & "-" & Producto & "-" & Aplicacion & "-" & fechaCreacion
@@ -203,6 +242,7 @@ Public Sub crearPaqueteAseguramiento()
         fso.CreateFolder rutaCarpetaAseguramiento
     End If
     
+    ' ========== CREAR Y GUARDAR LIBRO DE EXCEL ==========
     ' Crear nuevo libro de Excel
     Set wbNuevo = Workbooks.Add
     
@@ -220,23 +260,85 @@ Public Sub crearPaqueteAseguramiento()
     
     ' Eliminar la hoja vacía inicial
     Application.DisplayAlerts = False
-    wbNuevo.Worksheets(1).Delete
+    If wbNuevo.Worksheets.Count > 1 Then
+        wbNuevo.Worksheets(1).Delete
+    End If
     Application.DisplayAlerts = True
     
-    ' Guardar el nuevo libro
-    nombreArchivo = OT_Buscar & "-"&"Paquete de Aseguramiento.xlsx"
-    wbNuevo.SaveAs Filename:=rutaCarpetaAseguramiento & nombreArchivo, _
-                   FileFormat:=xlOpenXMLWorkbook
+    ' Preparar nombre de archivo
+    nombreArchivo = OT_Buscar & "-" & "Paquete de Aseguramiento.xlsx"
     
+    ' Limpiar caracteres inválidos del nombre de archivo
+    nombreArchivo = Replace(nombreArchivo, "/", "-")
+    nombreArchivo = Replace(nombreArchivo, "\", "-")
+    nombreArchivo = Replace(nombreArchivo, ":", "-")
+    nombreArchivo = Replace(nombreArchivo, "*", "-")
+    nombreArchivo = Replace(nombreArchivo, "?", "-")
+    nombreArchivo = Replace(nombreArchivo, """", "-")
+    nombreArchivo = Replace(nombreArchivo, "<", "-")
+    nombreArchivo = Replace(nombreArchivo, ">", "-")
+    nombreArchivo = Replace(nombreArchivo, "|", "-")
+    
+    ' Ruta completa del archivo final
+    rutaCompleta = rutaCarpetaAseguramiento & nombreArchivo
+    
+    ' Ruta temporal para guardar primero
+    rutaTemporal = Environ("TEMP") & "\" & nombreArchivo
+    
+    ' Eliminar archivo temporal si ya existe
+    On Error Resume Next
+    If Dir(rutaTemporal) <> "" Then Kill rutaTemporal
+    On Error GoTo 0
+    
+    ' Guardar en ubicación temporal
+    On Error GoTo ErrorGuardar
+    Application.DisplayAlerts = False
+    wbNuevo.SaveAs Filename:=rutaTemporal, FileFormat:=xlOpenXMLWorkbook
+    Application.DisplayAlerts = True
     wbNuevo.Close SaveChanges:=False
+    On Error GoTo 0
     
-    ' Mensaje de confirmación
+    ' Eliminar archivo en destino final si existe
+    On Error Resume Next
+    If Dir(rutaCompleta) <> "" Then Kill rutaCompleta
+    On Error GoTo 0
+    
+    ' Mover el archivo de temporal a ubicación final
+    On Error GoTo ErrorMover
+    fso.MoveFile rutaTemporal, rutaCompleta
+    On Error GoTo 0
+    
+    ' ========== MENSAJE FINAL ==========
     MsgBox "Paquete de aseguramiento creado exitosamente en:" & vbCrLf & _
-           rutaCarpetaAseguramiento & nombreArchivo, vbInformation, "Proceso completado"
+           rutaCarpetaAseguramiento & nombreArchivo & vbCrLf & vbCrLf & _
+           "Hojas copiadas: " & hojascopiar.Count, vbInformation, "Proceso completado"
     
     ' Abrir la carpeta
     Shell "explorer.exe """ & rutaCarpetaAseguramiento & """", vbNormalFocus
     
+    Exit Sub
+
+ErrorGuardar:
+    Application.DisplayAlerts = True
+    MsgBox "Error al guardar el archivo temporal:" & vbCrLf & _
+           "Ruta: " & rutaTemporal & vbCrLf & vbCrLf & _
+           "Error: " & Err.Description, vbCritical
+    
+    On Error Resume Next
+    wbNuevo.Close SaveChanges:=False
+    Exit Sub
+
+ErrorMover:
+    MsgBox "Error al mover el archivo a la ubicación final:" & vbCrLf & _
+           "Desde: " & rutaTemporal & vbCrLf & _
+           "Hacia: " & rutaCompleta & vbCrLf & vbCrLf & _
+           "Error: " & Err.Description & vbCrLf & vbCrLf & _
+           "El archivo se guardó en la carpeta temporal." & vbCrLf & _
+           "Puede moverlo manualmente.", vbCritical
+    
+    ' Abrir carpeta temporal
+    Shell "explorer.exe """ & Environ("TEMP") & """", vbNormalFocus
+    Exit Sub
 End Sub
 
 ' Función auxiliar para verificar si existe la hoja
