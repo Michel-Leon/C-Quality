@@ -412,5 +412,10 @@ Public Sub RESTABLECER_TABLA_INSPECCION()
     End With
 End Sub
 
+sub limpiar_menu_Principal()
+    ThisWorkbook.Worksheets("PROYECTO").Range("CT59").Value = ""
+    ThisWorkbook.Worksheets("PROYECTO").Range("GC64").Value = ""
+end sub
+
 
 
