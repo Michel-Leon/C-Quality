@@ -36,6 +36,7 @@ Public Sub Crear_Proyecto()
     Dim formatos_Destino As Variant
     Dim formato As Variant
     Dim filaDestino As Long
+    DIM TAG As String
     
     Set HOJA_PROYECTO = ThisWorkbook.Worksheets("PROYECTO")
     Elaborado_por = Me.OLEObjects("Elaboracion").Object.Value
@@ -45,6 +46,7 @@ Public Sub Crear_Proyecto()
     With HOJA_PROYECTO
         cliente = .Range("CT59").Value
         OT_General = .Range("GC64").Value
+        TAG = .Range("GC69").Value
         
         ' Buscar la primera fila vacía desde la fila 96, avanzando de 4 en 4
         filaDestino = 96
@@ -56,6 +58,7 @@ Public Sub Crear_Proyecto()
         ' Escribir en la fila encontrada
         .Range("BK" & filaDestino).Value = OT_General
         .Range("CE" & filaDestino).Value = Producto
+        .Range("DL" & filaDestino).Value = TAG
     End With
     
     Select Case Producto
@@ -68,7 +71,7 @@ Public Sub Crear_Proyecto()
                         .Range("F13").Value = cliente
                         .Range("AQ13").Value = OT_General
                         .Range("H113").Value = Elaborado_por
-                        .Range("Y13").Value = Producto & "-" & Aplicacion
+                        .Range("Y13").Value = TAG
                     End With
                 End If
             Next formato
@@ -82,7 +85,7 @@ Public Sub Crear_Proyecto()
                         .Range("F13").Value = cliente
                         .Range("AQ13").Value = OT_General
                         .Range("H113").Value = Elaborado_por
-                        .Range("Y13").Value = Producto & "-" & Aplicacion
+                        .Range("Y13").Value = TAG
                     End With
                 End If
             Next formato
