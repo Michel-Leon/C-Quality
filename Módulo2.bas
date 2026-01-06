@@ -55,3 +55,84 @@ Sub CambiarZoomEnTodasLasHojas()
 
     MsgBox "Zoom ajustado a " & zoomVal & "% en todas las hojas.", vbInformation
 End Sub
+
+public sub Ensayos_Basicos()
+    Dim shp As Shape
+    Dim gruponame As String
+    gruponame = "Ensayos Basicos"
+
+    on Error resume next
+    set shp = ActiveSheet.Shapes(gruponame)
+    On Error GoTo 0
+    If not shp Is Nothing Then
+        shp.Visible = Not shp.Visible
+        activeSheet.Shapes("Ensayos Estandar").Visible = False
+        activeSheet.Shapes("Ensayos PRO").Visible = False
+        activeSheet.Shapes("Ensayos ENTERPRISE").Visible = False
+        activeSheet.Shapes("Ensayo Personalizados").Visible = False
+    End If
+End Sub
+public sub Ensayos_Estandar()
+    Dim shp As Shape
+    Dim gruponame As String
+    gruponame = "Ensayos Estandar"
+
+    on Error resume next
+    set shp = ActiveSheet.Shapes(gruponame)
+    On Error GoTo 0
+    If not shp Is Nothing Then
+        shp.Visible = Not shp.Visible
+        activeSheet.Shapes("Ensayos Basicos").Visible = False
+        activeSheet.Shapes("Ensayos PRO").Visible = False
+        activeSheet.Shapes("Ensayos ENTERPRISE").Visible = False
+        activeSheet.Shapes("Ensayo Personalizados").Visible = False
+    End If
+End Sub
+public sub Ensayos_PRO()
+    Dim shp As Shape
+    Dim gruponame As String
+    gruponame = "Ensayos PRO"
+
+    on Error resume next
+    set shp = ActiveSheet.Shapes(gruponame)
+    On Error GoTo 0
+    If not shp Is Nothing Then
+        shp.Visible = Not shp.Visible
+        activeSheet.Shapes("Ensayos Basicos").Visible = False
+        activeSheet.Shapes("Ensayos Estandar").Visible = False
+        activeSheet.Shapes("Ensayos ENTERPRISE").Visible = False
+        activeSheet.Shapes("Ensayo Personalizados").Visible = False
+    End If
+End Sub 
+public sub Ensayos_ENTERPRISE()
+    Dim shp As Shape
+    Dim gruponame As String
+    gruponame = "Ensayos ENTERPRISE"
+
+    on Error resume next
+    set shp = ActiveSheet.Shapes(gruponame)
+    On Error GoTo 0
+    If not shp Is Nothing Then
+        shp.Visible = Not shp.Visible
+        activeSheet.Shapes("Ensayos Basicos").Visible = False
+        activeSheet.Shapes("Ensayos Estandar").Visible = False
+        activeSheet.Shapes("Ensayos PRO").Visible = False
+        activeSheet.Shapes("Ensayo Personalizados").Visible = False
+    End If
+End Sub
+public sub Ensayos_Personalizados()
+    Dim shp As Shape
+    Dim gruponame As String
+    gruponame = "Ensayo Personalizados"
+
+    on Error resume next
+    set shp = ActiveSheet.Shapes(gruponame)
+    On Error GoTo 0
+    If not shp Is Nothing Then
+        shp.Visible = Not shp.Visible
+        activeSheet.Shapes("Ensayos Basicos").Visible = False
+        activeSheet.Shapes("Ensayos Estandar").Visible = False
+        activeSheet.Shapes("Ensayos PRO").Visible = False
+        activeSheet.Shapes("Ensayos ENTERPRISE").Visible = False
+    End If
+End Sub
