@@ -10,6 +10,7 @@ public OT_Buscar As String
 public T1F As String, T2F As String, T3F As String, T4F As String, T5F As String ' para ensayos segun el tipo
 public EF1 AS STRING, EF2 AS STRING, EF3 AS STRING, EF4 AS STRING, EF5 AS STRING, EF6 AS STRING ' para ensayos FIJOS SEGUN EL TIPO
 PUBLIC EF7 AS STRING, EF8 AS STRING, EF9 AS STRING, EF10 AS STRING, EF11 AS STRING, EF12 AS STRING, EF13 AS STRING ' para ensayos FIJOS SEGUN EL TIPO
+Public AP1 AS STRING, AP2 AS STRING, AP3 AS STRING, AP4 AS STRING
 'TOMARR VALORES DE LAS CASILLAS
 Public CH1 as string, CH2 as string, CH3 as string, CH4 as string, CH5 as string, CH6 as string
 public columna1 as string, columna2 as string, columna3 as string, columna4 as string, columna5 as string, columna6 as string

@@ -136,3 +136,106 @@ public sub Ensayos_Personalizados()
         activeSheet.Shapes("Ensayos ENTERPRISE").Visible = False
     End If
 End Sub
+'----------------- MENUS PARA APLICAICONES -----------------
+public sub I_MCC()
+    Dim shp As Shape
+    Dim gruponame As String
+    gruponame = "Grupo I-MCC"
+
+    on Error resume next
+    set shp = ActiveSheet.Shapes(gruponame)
+    On Error GoTo 0
+    If not shp Is Nothing Then
+        shp.Visible = Not shp.Visible
+        activeSheet.Shapes("Grupo L-Meter").Visible = False
+        activeSheet.Shapes("Grupo O-Paralel").Visible = False
+        activeSheet.Shapes("Grupo P-ATS").Visible = False
+        activeSheet.Shapes("Grupo Q-Bank").Visible = False
+        activeSheet.Shapes("Grupo V-Drive").Visible = False
+    End If
+End Sub
+public sub L_METER()
+    Dim shp As Shape
+    Dim gruponame As String
+    gruponame = "Grupo L-Meter"
+
+    on Error resume next
+    set shp = ActiveSheet.Shapes(gruponame)
+    On Error GoTo 0
+    If not shp Is Nothing Then
+        shp.Visible = Not shp.Visible
+        activeSheet.Shapes("Grupo I-MCC").Visible = False
+        activeSheet.Shapes("Grupo O-Paralel").Visible = False
+        activeSheet.Shapes("Grupo P-ATS").Visible = False
+        activeSheet.Shapes("Grupo Q-Bank").Visible = False
+        activeSheet.Shapes("Grupo V-Drive").Visible = False
+    End If
+End Sub
+public sub O_PARALEL()
+    Dim shp As Shape
+    Dim gruponame As String
+    gruponame = "Grupo O-Paralel"
+
+    on Error resume next    
+    set shp = ActiveSheet.Shapes(gruponame)
+    On Error GoTo 0
+    If not shp Is Nothing Then
+        shp.Visible = Not shp.Visible
+        activeSheet.Shapes("Grupo I-MCC").Visible = False
+        activeSheet.Shapes("Grupo L-Meter").Visible = False
+        activeSheet.Shapes("Grupo P-ATS").Visible = False
+        activeSheet.Shapes("Grupo Q-Bank").Visible = False
+        activeSheet.Shapes("Grupo V-Drive").Visible = False
+    End If
+End Sub 
+public sub P_ATS()
+    Dim shp As Shape
+    Dim gruponame As String
+    gruponame = "Grupo P-ATS"
+
+    on Error resume next
+    set shp = ActiveSheet.Shapes(gruponame)
+    On Error GoTo 0
+    If not shp Is Nothing Then
+        shp.Visible = Not shp.Visible
+        activeSheet.Shapes("Grupo I-MCC").Visible = False
+        activeSheet.Shapes("Grupo L-Meter").Visible = False
+        activeSheet.Shapes("Grupo O-Paralel").Visible = False
+        activeSheet.Shapes("Grupo Q-Bank").Visible = False
+        activeSheet.Shapes("Grupo V-Drive").Visible = False
+    End If
+End Sub
+public sub Q_BANK()
+    Dim shp As Shape
+    Dim gruponame As String
+    gruponame = "Grupo Q-Bank"
+
+    on Error resume next
+    set shp = ActiveSheet.Shapes(gruponame)
+    On Error GoTo 0
+    If not shp Is Nothing Then
+        shp.Visible = Not shp.Visible
+        activeSheet.Shapes("Grupo I-MCC").Visible = False
+        activeSheet.Shapes("Grupo L-Meter").Visible = False
+        activeSheet.Shapes("Grupo O-Paralel").Visible = False
+        activeSheet.Shapes("Grupo P-ATS").Visible = False
+        activeSheet.Shapes("Grupo V-Drive").Visible = False
+    End If
+End Sub
+public sub V_DRIVE()
+    Dim shp As Shape
+    Dim gruponame As String
+    gruponame = "Grupo V-Drive"
+
+    on Error resume next    
+    set shp = ActiveSheet.Shapes(gruponame)
+    On Error GoTo 0
+    If not shp Is Nothing Then
+        shp.Visible = Not shp.Visible
+        activeSheet.Shapes("Grupo I-MCC").Visible = False
+        activeSheet.Shapes("Grupo L-Meter").Visible = False
+        activeSheet.Shapes("Grupo O-Paralel").Visible = False
+        activeSheet.Shapes("Grupo P-ATS").Visible = False
+        activeSheet.Shapes("Grupo Q-Bank").Visible = False
+    End If
+End Sub
