@@ -7,9 +7,9 @@ Public Producto As String
 Public Aplicacion As String
 PUBLIC OT_General As String
 public OT_Buscar As String
-public T1F As String, T2F As String, T3F As String, T4F As String, T5F As String
-
-
+public T1F As String, T2F As String, T3F As String, T4F As String, T5F As String ' para ensayos segun el tipo
+public EF1 AS STRING, EF2 AS STRING, EF3 AS STRING, EF4 AS STRING, EF5 AS STRING, EF6 AS STRING ' para ensayos FIJOS SEGUN EL TIPO
+PUBLIC EF7 AS STRING, EF8 AS STRING, EF9 AS STRING, EF10 AS STRING, EF11 AS STRING, EF12 AS STRING, EF13 AS STRING ' para ensayos FIJOS SEGUN EL TIPO
 'TOMARR VALORES DE LAS CASILLAS
 Public CH1 as string, CH2 as string, CH3 as string, CH4 as string, CH5 as string, CH6 as string
 public columna1 as string, columna2 as string, columna3 as string, columna4 as string, columna5 as string, columna6 as string
@@ -678,6 +678,12 @@ Public Sub RESTABLECER_TABLA_INSPECCION()
         .Range("GB84").Value = "FR-XXXX"
         .Range("GZ84").Value = "FR-XXXX"
         .Range("HX84").Value = "FR-XXXX"
+        .Range("EO84:EO140").value = false 
+        .Range("FA84:FA140").value = false
+        .Range("FY84:FY140").value = false
+        .Range("GW84:GW140").value = false
+        .Range("HU84:HU140").value = false
+        .Range("IS84:IS140").value = false
         
         ' Definir columnas a actualizar
         columnas = Array("EF", "ER", "FD", "GB", "GZ", "HX")

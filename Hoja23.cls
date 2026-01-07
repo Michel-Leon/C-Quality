@@ -3,6 +3,29 @@
 public Palabra As String' SE GUARDA EL TEXTO CORRESPONDIENTE
 Public PaqueteBasico as String, PaqueteEstandar as String, PaquetePro as String, PaqueteEnterprise as String, PaquetePersonalizado as String
 
+Public sub limpiar_tabla_ensayos()
+    'LIMPIAR VARIABLES
+    T1F = ""
+    T2F = ""
+    T3F = ""
+    T4F = ""
+    T5F = ""
+    EF1 = ""
+    EF2 = ""
+    EF3 = ""
+    EF4 = ""
+    EF5 = ""
+    EF6 = ""
+    EF7 = ""
+    EF8 = ""
+    EF9 = ""
+    EF10 = ""
+    EF11 = ""
+    EF12 = ""
+    EF13 = ""
+    ThisWorkbook.Sheets("ENSAYOS R").range("BA84:EF140").Value = ""
+end sub
+     
 
 public sub Worksheet_Activate()
 
@@ -231,8 +254,10 @@ Public Sub Cargar_Basico()
     End If
     If ActiveSheet.B5.Value = True Then
         T5 = "Inyección de corriente primaria por inducción (Circuito de medida.)"
-        T5F = "???" 'no se encontro referencia del formato
+        'T5F = "???" 'no se encontro referencia del formato
     End If
+    '
+
     
     ' Construir el texto de ensayos (eliminar líneas vacías)
     ENSAYOS_Basico = ""
@@ -284,7 +309,7 @@ Public Sub Cargar_Basico()
                vbCrLf & "Fila: " & filaOT & vbCrLf & vbCrLf & _
                "Ensayos:" & vbCrLf & Ensayos_Basico, vbInformation, "Éxito"
     Else
-        MsgBox "No se encontró la OT: " & OT_Buscada & " en la columna BA.", _
+        MsgBox "No se encontró la OT: " & OT_Buscada & " Verifique la OT.", _
                vbExclamation, "OT no encontrada"
     End If
     
@@ -316,13 +341,20 @@ public Sub Cargar_estandar()
     End If
     If ActiveSheet.ES4.Value = True Then
         T4 = "Imborabilidad del Rotulado."
-        T4F = "FR-0890" 'nCargado
+        'T4F = "FR-0892" 'no se encontro referencia del formato
     End If
     If ActiveSheet.ES5.Value = True Then
         T5 = "Permanecía del Rotulado."
-        T5F = "???" 'no se encontro referencia del formato
+        'T5F = "???" 'no se encontro referencia del formato
     End If
     
+     'AÑADIR ENSAYOS FIJOS SEGUN EL TIPO------------------BASICO----------------------------------------
+     EF1= "FR-0804" 'Efectividad del circuito de protección.
+     EF2= "FR-0815" 'Espesor de pintura.
+     EF3= "FR-0811" 'Grado de protección IP (Hasta 4X).
+     EF4= "FR-0890" 'Operación y funcionamiento mecánico..
+     EF5= "???" 'Inyección de corriente primaria por inducción (Circuito de medida.)
+     '------------------------------------------------------------------------------------------
     ' Construir el texto de ensayos (eliminar líneas vacías)
     Ensayos_Estandar = ""
     If T1 <> "" Then Ensayos_Estandar = Ensayos_Estandar & T1 & "/"
@@ -371,9 +403,9 @@ public Sub Cargar_estandar()
         
         MsgBox "Ensayos  cargados correctamente en la OT: " & OT_Buscada & _
                vbCrLf & "Fila: " & filaOT & vbCrLf & vbCrLf & _
-               "Ensayos:" & vbCrLf & Ensayos_Estandar, vbInformation, "Éxito"
+               "Ensayos:" &  vbCrLf & Ensayos_Estandar & " " & "+ Paquete de ensayos Basico", vbInformation, "Éxito"
     Else
-        MsgBox "No se encontró la OT: " & OT_Buscada & " en la columna BA.", _
+        MsgBox "No se encontró la OT: " & OT_Buscada & " Verifique la OT.", _
                vbExclamation, "OT no encontrada"
     End If
     
@@ -397,15 +429,15 @@ public Sub Cargar_PRO()
     End If
     If ActiveSheet.ES2.Value = True Then
         T2 = "Tiempos de disparo y cierre."
-        T2F = "???" 'NO SE ENCONTRO REFERENCIA
+        'T2F = "???" 'NO SE ENCONTRO REFERENCIA
     End If
     If ActiveSheet.ES3.Value = True Then
         T3 = "Discrepancia de polos."
-        T3F = "???"'NO SE ENCONTRO REFERENCIA
+        'T3F = "???"'NO SE ENCONTRO REFERENCIA
     End If
     If ActiveSheet.ES4.Value = True Then
         T4 = "Test verificación y operacion interruptor NSX."
-        T4F = "???" 'NO SE ENCONTRO REFERENCIA
+        'T4F = "???" 'NO SE ENCONTRO REFERENCIA
     End If
     
     ' Construir el texto de ensayos (eliminar líneas vacías)
@@ -415,7 +447,18 @@ public Sub Cargar_PRO()
     If T3 <> "" Then Ensayos_pro = Ensayos_pro & T3 & "/"
     If T4 <> "" Then Ensayos_pro = Ensayos_pro & T4 & "/"
     If T5 <> "" Then Ensayos_pro = Ensayos_pro & T5
-    
+    'AÑADIR ENSAYOS FIJOS SEGUN EL TIPO-----------------BASICO + ESTANDAR----------------------------------------
+        EF1= "FR-0804" 'Efectividad del circuito de protección.
+        EF2= "FR-0815" 'Espesor de pintura.
+        EF3= "FR-0811" 'Grado de protección IP (Hasta 4X).
+        EF4= "FR-0890" 'Operación y funcionamiento mecánico..
+        'EF5= "???" 'Inyección de corriente primaria por inducción (Circuito de medida.)
+        EF6= "FR-0890" 'Tensión soportada a frecuencia industrial.
+        EF7= "FR-0815" 'Adherencia de pintura.
+        'EF8= "FR-0892" 'Imborabilidad del Rotulado.
+        'EF9= "???" 'Permanecía del Rotulado.
+    '------------------------------------------------------------------------------------------
+
     ' Limpiar saltos de línea finales
     Ensayos_pro = Trim(Ensayos_pro)
     If Right(Ensayos_pro, 1) = Chr(10) Then
@@ -456,7 +499,7 @@ public Sub Cargar_PRO()
         
         MsgBox "Ensayos  cargados correctamente en la OT: " & OT_Buscada & _
                vbCrLf & "Fila: " & filaOT & vbCrLf & vbCrLf & _
-               "Ensayos:" & vbCrLf & Ensayos_pro, vbInformation, "Éxito"
+               "Ensayos:" & vbCrLf & Ensayos_pro & " + Paquete de ensayos Basico + Ensayos Estandar ", vbInformation, "Éxito"
     Else
         MsgBox "No se encontró la OT: " & OT_Buscada & " en la columna BA.", _
                vbExclamation, "OT no encontrada"
@@ -500,6 +543,22 @@ Public Sub Cargar_Enterprise()
         T4F = "???" 'NO SE ENCONTRO REFERENCIA
     End If
     
+    'AÑADIR ENSAYOS FIJOS SEGUN EL TIPO-----------------BASICO + ESTANDAR + PRO----------------------------------------
+        EF1= "FR-0804" 'Efectividad del circuito de protección.
+        EF2= "FR-0815" 'Espesor de pintura.
+        EF3= "FR-0811" 'Grado de protección IP (Hasta 4X).
+        EF4= "FR-0890" 'Operación y funcionamiento mecánico..
+        'EF5= "???" 'Inyección de corriente primaria por inducción (Circuito de medida.)
+        EF6= "FR-0890" 'Tensión soportada a frecuencia industrial.
+        EF7= "FR-0815" 'Adherencia de pintura.
+        'EF8= "FR-0892" 'Imborabilidad del Rotulado.
+        'EF9= "???" 'Permanecía del Rotulado.
+        EF10= "FR-0829" 'Pruebas a unidad de disparo Micrologic SE.
+        'EF11= "???" 'Tiempos de disparo y cierre.
+        'EF12= "???" 'Discrepancia de polos.
+        'EF13= "???1" 'Test de verificación y operación Interruptor NSX.
+    '------------------------------------------------------------------------------------------
+
     ' Construir el texto de ensayos
     Ensayos_Enterprise = ""
     If T1 <> "" Then Ensayos_Enterprise = Ensayos_Enterprise & T1 & "/"
@@ -547,7 +606,7 @@ Public Sub Cargar_Enterprise()
         
         MsgBox "Ensayos  cargados correctamente en la OT: " & OT_Buscada & _
                vbCrLf & "Fila: " & filaOT & vbCrLf & vbCrLf & _
-               "Ensayos:" & vbCrLf & Ensayos_Enterprise, vbInformation, "Éxito"
+               "Ensayos:" & vbCrLf & Ensayos_Enterprise & " + Paquete de ensayos Basico + Ensayos Estandar + Ensayos Pro ", vbInformation, "Éxito"
     Else
         MsgBox "No se encontró la OT: " & OT_Buscada & " en la columna BA.", _
                vbExclamation, "OT no encontrada"
