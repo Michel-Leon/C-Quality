@@ -239,3 +239,85 @@ public sub V_DRIVE()
         activeSheet.Shapes("Grupo Q-Bank").Visible = False
     End If
 End Sub
+
+'----------------- MENUS PARA SECCION DE EQUIPOS -----------------
+public sub Sistema_de_proteccion()
+    Dim shp As Shape
+    Dim gruponame As String
+    gruponame = "Sistema de proteccion"
+
+    on Error resume next
+    set shp = ActiveSheet.Shapes(gruponame)
+    On Error GoTo 0
+    If not shp Is Nothing Then
+        shp.Visible = Not shp.Visible
+        activeSheet.Shapes("Conversion y distribucion de energia").Visible = False
+        activeSheet.Shapes("Dispositivos de supervision y control").Visible = False
+        activeSheet.Shapes("Instrumentacion y medicion").Visible = False
+        activeSheet.Shapes("Servicios Auxiliares").Visible = False
+    End If
+End Sub
+public sub Conversion_y_distribucion_de_energia()
+    Dim shp As Shape
+    Dim gruponame As String
+    gruponame = "Conversion y distribucion de energia"
+
+    on Error resume next
+    set shp = ActiveSheet.Shapes(gruponame)
+    On Error GoTo 0
+    If not shp Is Nothing Then
+        shp.Visible = Not shp.Visible
+        activeSheet.Shapes("Sistema de proteccion").Visible = False
+        activeSheet.Shapes("Dispositivos de supervision y control").Visible = False
+        activeSheet.Shapes("Instrumentacion y medicion").Visible = False
+        activeSheet.Shapes("Servicios Auxiliares").Visible = False
+    End If
+End Sub
+public sub Dispositivos_de_supervision_y_control()
+    Dim shp As Shape
+    Dim gruponame As String
+    gruponame = "Dispositivos de supervision y control"
+
+    on Error resume next
+    set shp = ActiveSheet.Shapes(gruponame)
+    On Error GoTo 0
+    If not shp Is Nothing Then
+        shp.Visible = Not shp.Visible
+        activeSheet.Shapes("Sistema de proteccion").Visible = False
+        activeSheet.Shapes("Conversion y distribucion de energia").Visible = False
+        activeSheet.Shapes("Instrumentacion y medicion").Visible = False
+        activeSheet.Shapes("Servicios Auxiliares").Visible = False
+    End If
+End Sub
+public sub Instrumentacion_y_medicion()
+    Dim shp As Shape
+    Dim gruponame As String
+    gruponame = "Instrumentacion y medicion"
+
+    on Error resume next
+    set shp = ActiveSheet.Shapes(gruponame)
+    On Error GoTo 0
+    If not shp Is Nothing Then
+        shp.Visible = Not shp.Visible
+        activeSheet.Shapes("Sistema de proteccion").Visible = False
+        activeSheet.Shapes("Conversion y distribucion de energia").Visible = False
+        activeSheet.Shapes("Dispositivos de supervision y control").Visible = False
+        activeSheet.Shapes("Servicios Auxiliares").Visible = False
+    End If
+End Sub
+public sub Servicios_Auxiliares()
+    Dim shp As Shape
+    Dim gruponame As String
+    gruponame = "Servicios Auxiliares"
+
+    on Error resume next
+    set shp = ActiveSheet.Shapes(gruponame)
+    On Error GoTo 0
+    If not shp Is Nothing Then
+        shp.Visible = Not shp.Visible
+        activeSheet.Shapes("Sistema de proteccion").Visible = False
+        activeSheet.Shapes("Conversion y distribucion de energia").Visible = False
+        activeSheet.Shapes("Dispositivos de supervision y control").Visible = False
+        activeSheet.Shapes("Instrumentacion y medicion").Visible = False
+    End If
+End Sub
