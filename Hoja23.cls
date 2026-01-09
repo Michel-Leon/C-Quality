@@ -28,7 +28,11 @@ end sub
      
 
 public sub Worksheet_Activate()
-
+    activeSheet.Shapes("Ensayos Basicos").Visible = False
+    activeSheet.Shapes("Ensayos Estandar").Visible = False
+    activeSheet.Shapes("Ensayos PRO").Visible = False
+    activeSheet.Shapes("Ensayos ENTERPRISE").Visible = False
+    activeSheet.Shapes("Ensayo Personalizados").Visible = False
     with Me.OLEObjects("Ensayo1").Object
         .Clear 
         .AddItem "Efectividad del circuito de protección."

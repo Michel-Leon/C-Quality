@@ -30,6 +30,21 @@ public sub Worksheet_Activate()
     ActiveSheet.PAST33.Enabled = False
     ActiveSheet.PAST34.Enabled = False
     ActiveSheet.PAST35.Enabled = False
+    ' poner los check en false
+    ActiveSheet.IMCC1.Value = False
+    ActiveSheet.IMCC2.Value = False
+    ActiveSheet.IMCC3.Value = False
+    ActiveSheet.IMCC4.Value = False
+    ActiveSheet.LMeter1.Value = False
+    ActiveSheet.OParalel1.Value = False
+    ActiveSheet.PATS1.Value = False
+    ActiveSheet.PAST2.Value = False
+    ActiveSheet.PAST3.Value = False
+    ActiveSheet.QBank1.Value = False
+    ActiveSheet.QBank2.Value = False
+    ActiveSheet.QBank3.Value = False
+    ActiveSheet.QBank4.Value = False
+    ActiveSheet.VDrive1.Value = False
 
 end sub
 Public Sub buscar_Producto(PalabraBuscada As String)
