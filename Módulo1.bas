@@ -643,12 +643,12 @@ Public Sub crearPaqueteAplicaciones()
     Dim rutaBase As String
     Dim nombreCarpetaProyecto As String
     Dim nombreCarpetaPrincipal As String
-    Dim nombreCarpetaEnsayos As String
+    Dim nombreCarpetaAplicaciones As String
     Dim rutaCarpetaProyecto As String
     Dim rutaCarpetaPrincipal As String
-    Dim rutaCarpetaEnsayos As String
+    Dim rutaCarpetaAplicaciones As String
     Dim nombreArchivo As String
-    Dim estadoVerificacionEnsayos As String
+    Dim estadoVerificacionAplicaciones As String
     Dim hoja_Proyecto As Worksheet
     Dim filaOT_Proyecto As Long
     Dim fechaCreacion As String
@@ -692,7 +692,7 @@ Public Sub crearPaqueteAplicaciones()
     Do While hoja_Proyecto.Range("BK" & filaOT_Proyecto).Value <> ""
         If hoja_Proyecto.Range("BK" & filaOT_Proyecto).Value = OT_Buscar Then
             ' Obtener el estado de verificación de ensayos de la columna FP
-            estadoVerificacionEnsayos = hoja_Proyecto.Range("FP" & filaOT_Proyecto).Value
+            estadoVerificacionAplicaciones = hoja_Proyecto.Range("FP" & filaOT_Proyecto).Value
             encontradoProyecto = True
             Exit Do
         End If
@@ -707,9 +707,9 @@ Public Sub crearPaqueteAplicaciones()
     End If
     
     ' ========== VERIFICAR ESTADO DE ENSAYOS ==========
-    If UCase(Trim(estadoVerificacionEnsayos)) <> "VERIFICADO" Then
+    If UCase(Trim(estadoVerificacionAplicaciones)) <> "VERIFICADO" Then
         MsgBox "La OT " & OT_Buscar & " no tiene los ensayos verificados." & vbCrLf & _
-               "Estado actual en columna FP: " & estadoVerificacionEnsayos & vbCrLf & _
+               "Estado actual en columna FP: " & estadoVerificacionAplicaciones & vbCrLf & _
                "No se puede crear el paquete de ensayos.", vbExclamation
         Exit Sub
     End If
@@ -811,11 +811,11 @@ Public Sub crearPaqueteAplicaciones()
     End If
     
     ' Crear carpeta "02.Ensayos"
-    nombreCarpetaEnsayos = "03.Aplicaciones"
-    rutaCarpetaEnsayos = rutaCarpetaPrincipal & nombreCarpetaEnsayos & "\"
+    nombreCarpetaAplicaciones= "03.Aplicaciones"
+    rutaCarpetaAplicaciones = rutaCarpetaPrincipal & nombreCarpetaAplicaciones& "\"
     
-    If Not fso.FolderExists(rutaCarpetaEnsayos) Then
-        fso.CreateFolder rutaCarpetaEnsayos
+    If Not fso.FolderExists(rutaCarpetaAplicaciones) Then
+        fso.CreateFolder rutaCarpetaAplicaciones
     End If
     
     ' ========== CREAR Y GUARDAR LIBRO DE EXCEL ==========
@@ -856,7 +856,7 @@ Public Sub crearPaqueteAplicaciones()
     nombreArchivo = Replace(nombreArchivo, "|", "-")
     
     ' Ruta completa del archivo final
-    rutaCompleta = rutaCarpetaEnsayos & nombreArchivo
+    rutaCompleta = rutaCarpetaAplicaciones & nombreArchivo
     
     ' Ruta temporal para guardar primero
     rutaTemporal = Environ("TEMP") & "\" & nombreArchivo
@@ -886,12 +886,261 @@ Public Sub crearPaqueteAplicaciones()
     
     ' ========== MENSAJE FINAL ==========
     MsgBox "Paquete de ensayos creado exitosamente en:" & vbCrLf & _
-           rutaCarpetaEnsayos & nombreArchivo & vbCrLf & vbCrLf & _
+           rutaCarpetaAplicaciones & nombreArchivo & vbCrLf & vbCrLf & _
            "Proyecto: " & nombreCarpetaProyecto & vbCrLf & _
            "Hojas copiadas: " & hojascopiar.Count, vbInformation, "Proceso completado"
     
     ' Abrir la carpeta
-    Shell "explorer.exe """ & rutaCarpetaEnsayos & """", vbNormalFocus
+    Shell "explorer.exe """ & rutaCarpetaAplicaciones & """", vbNormalFocus
+    
+    Exit Sub
+
+    ErrorGuardar:
+        Application.DisplayAlerts = True
+        MsgBox "Error al guardar el archivo temporal:" & vbCrLf & _
+            "Ruta: " & rutaTemporal & vbCrLf & vbCrLf & _
+            "Error: " & Err.Description, vbCritical
+        
+        On Error Resume Next
+        wbNuevo.Close SaveChanges:=False
+        Exit Sub
+
+    ErrorMover:
+        MsgBox "Error al mover el archivo a la ubicación final:" & vbCrLf & _
+            "Desde: " & rutaTemporal & vbCrLf & _
+            "Hacia: " & rutaCompleta & vbCrLf & vbCrLf & _
+            "Error: " & Err.Description & vbCrLf & vbCrLf & _
+            "El archivo se guardó en la carpeta temporal." & vbCrLf & _
+            "Puede moverlo manualmente.", vbCritical
+        
+        ' Abrir carpeta temporal
+        Shell "explorer.exe """ & Environ("TEMP") & """", vbNormalFocus
+        Exit Sub
+End Sub
+
+Public Sub crearPaqueteEquipos()
+    Dim wbOrigen As Workbook
+    Dim wbNuevo As Workbook
+    Dim hojascopiar As Collection
+    Dim hoja As Worksheet
+    Dim rutaBase As String
+    Dim nombreCarpetaProyecto As String
+    Dim nombreCarpetaPrincipal As String
+    Dim nombreCarpetaequipos As String
+    Dim rutaCarpetaProyecto As String
+    Dim rutaCarpetaPrincipal As String
+    Dim rutaCarpetaEquipos As String
+    Dim nombreArchivo As String
+    Dim estadoVerificacionEquipos As String
+    Dim hoja_Proyecto As Worksheet
+    Dim filaOT_Proyecto As Long
+    Dim fechaCreacion As String
+    Dim fso As Object
+    Dim encontradoProyecto As Boolean
+    Dim rutaTemporal As String
+    Dim rutaCompleta As String
+    
+    Set wbOrigen = ThisWorkbook
+    Set hojascopiar = New Collection
+    Set hoja_Proyecto = wbOrigen.Worksheets("PROYECTO")
+    Set fso = CreateObject("Scripting.FileSystemObject")
+    
+    ' Obtener la fecha actual en formato YYYY-MM-DD
+    fechaCreacion = Format(Date, "yyyy-mm-dd")
+    
+    ' ========== OBTENER NOMBRE DEL PROYECTO DESDE CT59 ==========
+    nombreCarpetaProyecto = Trim(wbOrigen.Worksheets("PROYECTO").Range("CT59").Value)
+    
+    ' Validar que el nombre del proyecto no esté vacío
+    If nombreCarpetaProyecto = "" Then
+        MsgBox "La celda CT59 no contiene un nombre de proyecto." & vbCrLf & _
+               "Por favor, ingrese un nombre de proyecto antes de continuar.", vbExclamation
+        Exit Sub
+    End If
+    
+    ' Limpiar caracteres inválidos del nombre de carpeta proyecto
+    nombreCarpetaProyecto = Replace(nombreCarpetaProyecto, "/", "-")
+    nombreCarpetaProyecto = Replace(nombreCarpetaProyecto, "\", "-")
+    nombreCarpetaProyecto = Replace(nombreCarpetaProyecto, ":", "-")
+    nombreCarpetaProyecto = Replace(nombreCarpetaProyecto, "*", "-")
+    nombreCarpetaProyecto = Replace(nombreCarpetaProyecto, "?", "-")
+    nombreCarpetaProyecto = Replace(nombreCarpetaProyecto, """", "-")
+    nombreCarpetaProyecto = Replace(nombreCarpetaProyecto, "<", "-")
+    nombreCarpetaProyecto = Replace(nombreCarpetaProyecto, ">", "-")
+    nombreCarpetaProyecto = Replace(nombreCarpetaProyecto, "|", "-")
+    
+    ' ========== BUSCAR OT EN HOJA PROYECTO ==========
+    encontradoProyecto = False
+    filaOT_Proyecto = 96
+    Do While hoja_Proyecto.Range("BK" & filaOT_Proyecto).Value <> ""
+        If hoja_Proyecto.Range("BK" & filaOT_Proyecto).Value = OT_Buscar Then
+            ' Obtener el estado de verificación de equipos de la columna FP
+            estadoVerificacionEquipos = hoja_Proyecto.Range("HQ" & filaOT_Proyecto).Value
+            encontradoProyecto = True
+            Exit Do
+        End If
+        filaOT_Proyecto = filaOT_Proyecto + 4
+        If filaOT_Proyecto > 10000 Then Exit Do
+    Loop
+    
+    ' Verificar si se encontró en PROYECTO
+    If Not encontradoProyecto Then
+        MsgBox "No se encontró la OT " & OT_Buscar & " en la hoja PROYECTO.", vbExclamation
+        Exit Sub
+    End If
+    
+    ' ========== VERIFICAR ESTADO DE equipos ==========
+    If UCase(Trim(estadoVerificacionEquipos)) <> "VERIFICADO" Then
+        MsgBox "La OT " & OT_Buscar & " no tiene los ensayos verificados." & vbCrLf & _
+               "Estado actual en columna Equipos: " & estadoVerificacionEquipos & vbCrLf & _
+               "No se puede crear el paquete de ensayos.", vbExclamation
+        Exit Sub
+    End If
+    ' ========== AGREGAR HOJAS SEGÚN LAS VARIABLES AP1-AP8 ==========
+    ' Agregar hoja EQ1 si tiene valor
+    If Trim(EQ1) <> "" Then
+        If SheetExists(EQ1) Then
+            hojascopiar.Add wbOrigen.Worksheets(EQ1)
+        Else
+            MsgBox "Advertencia: La hoja '" & EQ1 & "' no existe en el libro.", vbExclamation
+        End If
+    End If
+    
+    ' Agregar hoja EQ2 si tiene valor
+    If Trim(EQ2) <> "" Then
+        If SheetExists(EQ2) Then
+            hojascopiar.Add wbOrigen.Worksheets(EQ2)
+        Else
+            MsgBox "Advertencia: La hoja '" & EQ2 & "' no existe en el libro.", vbExclamation
+        End If
+    End If
+    
+    ' Agregar hoja AP3 si tiene valor
+    If Trim(EQ3) <> "" Then
+        If SheetExists(EQ3) Then
+            hojascopiar.Add wbOrigen.Worksheets(EQ3)
+        Else
+            MsgBox "Advertencia: La hoja '" & EQ3 & "' no existe en el libro.", vbExclamation
+        End If
+    End If
+    
+    ' Agregar hoja EQ4 si tiene valor
+    If Trim(EQ4) <> "" Then
+        If SheetExists(EQ4) Then
+            hojascopiar.Add wbOrigen.Worksheets(EQ4)
+        Else
+            MsgBox "Advertencia: La hoja '" & AP4 & "' no existe en el libro.", vbExclamation
+        End If
+    End If
+    
+    ' Verificar si hay hojas para copiar
+    If hojascopiar.Count = 0 Then
+        MsgBox "No hay hojas de formatos de equi para copiar." & vbCrLf & _
+               "Verifique que las variables T1F a T5F contengan nombres de hojas válidos.", vbExclamation
+        Exit Sub
+    End If
+    
+    ' ========== CREAR ESTRUCTURA DE CARPETAS ==========
+    ' Definir ruta base
+    rutaBase = "C:\Users\sleon\OneDrive - industriascts.com\Pruebas FAT\"
+    
+    ' Ruta de la carpeta del proyecto
+    rutaCarpetaProyecto = rutaBase & nombreCarpetaProyecto & "\"
+    If Not fso.FolderExists(rutaCarpetaProyecto) Then
+        fso.CreateFolder rutaCarpetaProyecto
+    End If
+    
+    ' Crear nombre de carpeta principal (OT): OT-Producto-Aplicacion-Fecha
+    nombreCarpetaPrincipal = "OT-" & OT_Buscar & "-" & Producto & "-" & Aplicacion & "-" & fechaCreacion
+    rutaCarpetaPrincipal = rutaCarpetaProyecto & nombreCarpetaPrincipal & "\"
+    
+    ' Crear carpeta de OT si no existe
+    If Not fso.FolderExists(rutaCarpetaPrincipal) Then
+        fso.CreateFolder rutaCarpetaPrincipal
+    End If
+    
+    ' Crear carpeta "02.Ensayos"
+    nombreCarpetaequipos = "03.Aplicaciones"
+    rutaCarpetaEquipos = rutaCarpetaPrincipal & nombreCarpetaequipos & "\"
+    
+    If Not fso.FolderExists(rutaCarpetaEquipos) Then
+        fso.CreateFolder rutaCarpetaEquipos
+    End If
+    
+    ' ========== CREAR Y GUARDAR LIBRO DE EXCEL ==========
+    ' Crear nuevo libro de Excel
+    Set wbNuevo = Workbooks.Add
+    
+    ' Eliminar hojas predeterminadas del nuevo libro (excepto una)
+    Application.DisplayAlerts = False
+    Do While wbNuevo.Worksheets.Count > 1
+        wbNuevo.Worksheets(wbNuevo.Worksheets.Count).Delete
+    Loop
+    Application.DisplayAlerts = True
+    
+    ' Copiar las hojas seleccionadas al nuevo libro
+    For Each hoja In hojascopiar
+        hoja.Copy After:=wbNuevo.Worksheets(wbNuevo.Worksheets.Count)
+    Next hoja
+    
+    ' Eliminar la hoja vacía inicial
+    Application.DisplayAlerts = False
+    If wbNuevo.Worksheets.Count > 1 Then
+        wbNuevo.Worksheets(1).Delete
+    End If
+    Application.DisplayAlerts = True
+    
+    ' Preparar nombre de archivo
+    nombreArchivo = OT_Buscar & "-" & "Paquete aplicacion.xlsx"
+    
+    ' Limpiar caracteres inválidos del nombre de archivo
+    nombreArchivo = Replace(nombreArchivo, "/", "-")
+    nombreArchivo = Replace(nombreArchivo, "\", "-")
+    nombreArchivo = Replace(nombreArchivo, ":", "-")
+    nombreArchivo = Replace(nombreArchivo, "*", "-")
+    nombreArchivo = Replace(nombreArchivo, "?", "-")
+    nombreArchivo = Replace(nombreArchivo, """", "-")
+    nombreArchivo = Replace(nombreArchivo, "<", "-")
+    nombreArchivo = Replace(nombreArchivo, ">", "-")
+    nombreArchivo = Replace(nombreArchivo, "|", "-")
+    
+    ' Ruta completa del archivo final
+    rutaCompleta = rutaCarpetaAplicaciones & nombreArchivo
+    
+    ' Ruta temporal para guardar primero
+    rutaTemporal = Environ("TEMP") & "\" & nombreArchivo
+    
+    ' Eliminar archivo temporal si ya existe
+    On Error Resume Next
+    If Dir(rutaTemporal) <> "" Then Kill rutaTemporal
+    On Error GoTo 0
+    
+    ' Guardar en ubicación temporal
+    On Error GoTo ErrorGuardar
+    Application.DisplayAlerts = False
+    wbNuevo.SaveAs Filename:=rutaTemporal, FileFormat:=xlOpenXMLWorkbook
+    Application.DisplayAlerts = True
+    wbNuevo.Close SaveChanges:=False
+    On Error GoTo 0
+    
+    ' Eliminar archivo en destino final si existe
+    On Error Resume Next
+    If Dir(rutaCompleta) <> "" Then Kill rutaCompleta
+    On Error GoTo 0
+    
+    ' Mover el archivo de temporal a ubicación final
+    On Error GoTo ErrorMover
+    fso.MoveFile rutaTemporal, rutaCompleta
+    On Error GoTo 0
+    
+    ' ========== MENSAJE FINAL ==========
+    MsgBox "Paquete de ensayos creado exitosamente en:" & vbCrLf & _
+           rutaCarpetaEquipos & nombreArchivo & vbCrLf & vbCrLf & _
+           "Proyecto: " & nombreCarpetaProyecto & vbCrLf & _
+           "Hojas copiadas: " & hojascopiar.Count, vbInformation, "Proceso completado"
+    
+    ' Abrir la carpeta
+    Shell "explorer.exe """ & rutaCarpetaEquipos & """", vbNormalFocus
     
     Exit Sub
 
@@ -975,6 +1224,7 @@ Sub OpcionInputBoxConValidacion()
             Case "04", "4"
                 nombreCarpeta = "04.Equipos"
                 valido = True
+                CALL crearPaqueteEquipos
             Case Else
                 MsgBox "✘ Opción no válida." & vbCrLf & vbCrLf & _
                        "Por favor ingrese un número entre 01 y 04.", _
