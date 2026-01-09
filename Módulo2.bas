@@ -321,3 +321,23 @@ public sub Servicios_Auxiliares()
         activeSheet.Shapes("Instrumentacion y medicion").Visible = False
     End If
 End Sub
+
+' formularios de acceso
+
+Sub AbrirLogin1()
+    Bloqueo_Aseguramient.Show
+End Sub
+
+Sub AbrirLogin2()
+    Bloqueo_USUARIOS.Show
+End Sub
+
+Sub AbrirLogin3()
+    Bloqueo_Aplicaciones.Show
+End Sub
+sub AbrirLogin4()
+    Bloqueo_Equipos.Show
+End Sub
+sub AbrirLogin5()
+    Bloqueo_Ensayos.Show   
+End Sub
