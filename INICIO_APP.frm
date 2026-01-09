@@ -48,7 +48,7 @@ Private Sub cmdLogin_Click()
 
     If loginCorrecto Then
         INICIO_APP.Hide
-        Sheets("MENU PRINCIPAL").Activate
+        Sheets("INICIO").Activate
         
         ' Registrar acceso
         Set wsLog = ThisWorkbook.Sheets("Accesos")
@@ -60,7 +60,7 @@ Private Sub cmdLogin_Click()
         ThisWorkbook.Save 'GUARDAE EL ARCHIVO AUTOMATICAMENTE
 
         If Not esSuperAdmin Then
-            Sheets("MENU PRINCIPAL").Range("BI2").Value = ws.Cells(i, 4).Value
+            Sheets("INICIO").Range("HD4").Value = ws.Cells(i, 4).Value
         Else
             MsgBox "Acceso concedido como Super Administrador.", vbInformation
         End If

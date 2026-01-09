@@ -56,6 +56,15 @@ Sub CambiarZoomEnTodasLasHojas()
     MsgBox "Zoom ajustado a " & zoomVal & "% en todas las hojas.", vbInformation
 End Sub
 
+Sub MostrarTodasLasHojas()
+    Dim ws As Worksheet
+    For Each ws In ThisWorkbook.Worksheets
+        ws.Visible = xlSheetVisible
+    Next ws
+    Application.ExecuteExcel4Macro "SHOW.TOOLBAR(""Ribbon"", TRUE)"
+    Application.DisplayFormulaBar = True
+End Sub
+
 public sub Ensayos_Basicos()
     Dim shp As Shape
     Dim gruponame As String
