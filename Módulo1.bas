@@ -812,7 +812,7 @@ Public Sub crearPaqueteAplicaciones()
     
     ' Crear carpeta "02.Ensayos"
     nombreCarpetaAplicaciones= "03.Aplicaciones"
-    rutaCarpetaAplicaciones = rutaCarpetaPrincipal & nombreCarpetaAplicaciones& "\"
+    rutaCarpetaAplicaciones = rutaCarpetaPrincipal & nombreCarpetaAplicaciones & "\"
     
     If Not fso.FolderExists(rutaCarpetaAplicaciones) Then
         fso.CreateFolder rutaCarpetaAplicaciones
